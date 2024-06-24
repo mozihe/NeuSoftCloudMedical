@@ -96,7 +96,7 @@ public class PatientServiceImpl implements PatientService {
             throw new AppException(ResultCode.PASSWORD_ERROR, "密码错误");
         }
 
-        Map<String, Object> claims = Map.of("id", patient.getId(), "username", patient.getUsername());
+        Map<String, Object> claims = Map.of("id", patient.getId(), "username", patient.getUsername(), "role", "patient");
         String token = JwtUtil.genToken(claims);
 
         ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
@@ -143,11 +143,13 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public Patient getInfo() {
         Map<String, Object> map = ThreadLocalUtil.get();
-        String username = (String) map.get("role");
-        if (!username.equals("patient")) {
+        String role = (String) map.get("role");
+        if (!role.equals("patient")) {
             throw new AppException(ResultCode.UNAUTHORIZED, "权限不足");
         }
         Long id = ((Integer) map.get("id")).longValue();
+
+        System.out.println(id);
 
         return patientMapper.selectById(id);
     }

@@ -1,13 +1,6 @@
 <script setup>
 import {
-  CaretBottom,
-  Crop,
-  EditPen,
-  Management,
   Promotion,
-  SwitchButton,
-  User,
-  UserFilled
 } from '@element-plus/icons-vue'
 </script>
 
@@ -17,19 +10,13 @@ import {
       <div class="el-aside__logo"></div>
       <el-menu active-text-color="#ffd04b" background-color="#232323" text-color="#fff"
                router>
-        <el-menu-item index="/board/waitverity/main">
-          <el-icon>
-            <Management/>
-          </el-icon>
-          <span>首页</span>
-        </el-menu-item>
-        <el-menu-item index="/board/waitverity/submission">
+        <el-menu-item index="/board/waitverify/submission">
           <el-icon>
             <Promotion/>
           </el-icon>
           <span>提交申请</span>
         </el-menu-item>
-        <el-menu-item index="/board/waitverity/my">
+        <el-menu-item index="/board/waitverify/my">
           <el-icon>
             <Promotion/>
           </el-icon>
@@ -37,6 +24,10 @@ import {
         </el-menu-item>
       </el-menu>
     </el-aside>
+    <el-container class="content-container">
+      <router-view style="width: 100%"/>
+    </el-container>
+
   </el-container>
 
 </template>
@@ -47,6 +38,7 @@ import {
 
   .el-aside {
     background-color: #232323;
+    user-select: none;
 
     &__logo {
       height: 100px;
@@ -57,6 +49,12 @@ import {
       border-right: none;
     }
   }
+}
+.content-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 </style>

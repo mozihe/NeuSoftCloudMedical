@@ -31,6 +31,7 @@ const getUserInfo = async () => {
   if (roleStore.role === 'patient') {
     const result = await getPatientInfo()
     userInfoStore.setUserInfo(result.data)
+    console.log(result.data)
   } else {
     const result = await getDoctorInfo()
     userInfoStore.setUserInfo(result.data)

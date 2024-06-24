@@ -6,8 +6,9 @@ import Doctor from "@/components/doctor/Doctor.vue";
 import Patient from "@/components/patient/Patient.vue";
 import Admin from "@/components/doctor/Admin.vue";
 import Drug from "@/components/doctor/Drug.vue";
-import Expert from "@/components/doctor/Expert.vue";
 import WaitVerify from "@/components/doctor/WaitVerify.vue";
+import Submission from "@/components/doctor/wait_verify/WaitVerifySubmission.vue";
+import MySubbmision from "@/components/doctor/wait_verify/MySubbmision.vue";
 
 const routes = [
     {path: "/login", component: LoginRegister},
@@ -15,12 +16,22 @@ const routes = [
         path: "/board",
         component: Layout,
         children: [
-            {path: "admin", component: Admin},
+            {
+                path: "admin",
+                component: Admin
+            },
             {path: "doctor", component: Doctor},
             {path: "patient", component: Patient},
             {path: "drug", component: Drug},
-            {path: "expert", component: Expert},
-            {path: "waitverify", component: WaitVerify}
+            {
+                path: "waitverify",
+                component: WaitVerify,
+                redirect: '/board/waitverify/submission',
+                children: [
+                    {path: "submission", component: Submission},
+                    {path: "my", component: MySubbmision}
+              ]
+            }
         ]
     }
 ]
@@ -36,14 +47,12 @@ router.beforeEach((to, from, next) => {
         if (roleStore.role) {
             if (roleStore.role === 'admin') {
                 next('/board/admin')
-            } else if (roleStore.role === 'doctor') {
+            } else if (roleStore.role === 'doctor' || roleStore.role === 'expert') {
                 next('/board/doctor')
             } else if (roleStore.role === 'patient') {
                 next('/board/patient')
             } else if (roleStore.role === 'drug') {
                 next('/board/drug')
-            } else if (roleStore.role === 'expert') {
-                next('/board/expert')
             } else {
                 next('/board/waitverify')
             }

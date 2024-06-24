@@ -78,7 +78,6 @@ const sendCode = async () => {
 
   form.value.validateField('email', async (valid) => {
     if (valid) {
-
       const result = await sendEmail({
         email: registerData.value.email,
       });

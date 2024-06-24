@@ -37,8 +37,31 @@ CREATE TABLE doctors (
                          avatar_url VARCHAR(255),
                          role VARCHAR(20) NOT NULL, -- 用于区分医生、专家、药房医生、管理员
                          verified BOOLEAN DEFAULT FALSE,
+                         id_number VARCHAR(20) UNIQUE,
                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                          FOREIGN KEY (department_id) REFERENCES departments(id)
 );
 
+CREATE TABLE applications (
+                              id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                              doctor_id BIGINT NOT NULL,
+                              name VARCHAR(100) NOT NULL,
+                              applied_role VARCHAR(20) NOT NULL,
+                              application_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                              status VARCHAR(20) DEFAULT 'ING',
+                              FOREIGN KEY (doctor_id) REFERENCES doctors(id)
+);
+
+CREATE TABLE registrations (
+                               id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                               patient_id BIGINT NOT NULL,
+                               doctor_id BIGINT NOT NULL,
+                               department_id BIGINT NOT NULL,
+                               reason TEXT,
+                               created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                               updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                               FOREIGN KEY (patient_id) REFERENCES patients(id),
+                               FOREIGN KEY (doctor_id) REFERENCES doctors(id),
+                               FOREIGN KEY (department_id) REFERENCES departments(id)
+);

@@ -73,6 +73,7 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.setContactInfo("未填写");
         doctor.setDepartmentId(1L);
         doctor.setIntroduction("未填写");
+        doctor.setIdNumber("未填写");
         doctor.setRole("unverified");
         doctor.setVerified(false);
 
@@ -113,7 +114,6 @@ public class DoctorServiceImpl implements DoctorService {
     public void updateAvatar(UpdateAvatarDTO updateAvatarDTO) {
         Map<String, Object> map = ThreadLocalUtil.get();
         String role = (String) map.get("role");
-        System.out.println(role);
         if (role == null || (!role.equals("doctor") && !role.equals("unverified") && !role.equals("admin") && !role.equals("drug") && !role.equals("expert"))) {
             throw new AppException(ResultCode.UNAUTHORIZED, "无权限");
         }
