@@ -4,6 +4,7 @@ import com.moxin.java.pojo.dto.LoginDTO;
 import com.moxin.java.pojo.dto.RePasswordDTO;
 import com.moxin.java.pojo.dto.RegisterDTO;
 import com.moxin.java.pojo.dto.UpdateAvatarDTO;
+import com.moxin.java.pojo.dto.UpdatePatientInfoDTO;
 import com.moxin.java.pojo.vo.Result;
 import com.moxin.java.service.PatientService;
 import com.moxin.java.utils.ResultCode;
@@ -44,4 +45,12 @@ public class PatientController {
     public Result getInfo() {
         return Result.builder().code(ResultCode.SUCCESS).message("获取信息成功").data(patientService.getInfo()).build();
     }
+
+    @RequestMapping("/update/info")
+    public Result updateInfo(@RequestBody UpdatePatientInfoDTO updatePatientInfoDTO) {
+        patientService.updateInfo(updatePatientInfoDTO);
+        return Result.builder().code(ResultCode.SUCCESS).message("更新信息成功").build();
+    }
+
+
 }

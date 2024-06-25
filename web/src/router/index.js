@@ -9,6 +9,11 @@ import Drug from "@/components/doctor/Drug.vue";
 import WaitVerify from "@/components/doctor/WaitVerify.vue";
 import Submission from "@/components/doctor/wait_verify/WaitVerifySubmission.vue";
 import MySubbmision from "@/components/doctor/wait_verify/MySubbmision.vue";
+import Registered from "@/components/patient/Registered.vue";
+import Appointment from "@/components/patient/Appointment.vue";
+import PatientInfo from "@/components/patient/PatientInfo.vue";
+import LookDepartment from "@/components/patient/LookDepartment.vue";
+import LookDoctor from "@/components/patient/LookDoctor.vue";
 
 const routes = [
     {path: "/login", component: LoginRegister},
@@ -21,7 +26,18 @@ const routes = [
                 component: Admin
             },
             {path: "doctor", component: Doctor},
-            {path: "patient", component: Patient},
+            {
+                path: "patient",
+                component: Patient,
+                redirect: '/board/patient/registered',
+                children: [
+                    {path: "registered", component: Registered},
+                    {path: "reserve", component: Appointment},
+                    {path: "info", component: PatientInfo},
+                    {path: "lookdepartment", component: LookDepartment},
+                    {path: "lookdoctor", component: LookDoctor}
+                ]
+            },
             {path: "drug", component: Drug},
             {
                 path: "waitverify",

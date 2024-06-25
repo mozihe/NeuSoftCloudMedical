@@ -31,7 +31,6 @@ const getUserInfo = async () => {
   if (roleStore.role === 'patient') {
     const result = await getPatientInfo()
     userInfoStore.setUserInfo(result.data)
-    console.log(result.data)
   } else {
     const result = await getDoctorInfo()
     userInfoStore.setUserInfo(result.data)
@@ -51,7 +50,6 @@ const uploadSuccess = (result) => {
   }
   imgUrl.value = result.data;
   ElMessage.success("图片上传成功")
-  console.log(result)
 }
 
 const updateAvatar = async () => {
@@ -193,7 +191,7 @@ const rules = {
         <div><strong>{{ userInfoStore.userInfo.username }}</strong></div>
         <el-dropdown placement="bottom-end">
                     <span class="el-dropdown__box">
-                        <el-avatar :src="userInfoStore.userInfo.avatarUrl?userInfoStore.userInfo.avatarUrl:avatar"/>
+                        <el-avatar :src="userInfoStore.userInfo.avatarUrl !== '' ? userInfoStore.userInfo.avatarUrl:avatar"/>
                         <el-icon>
                             <CaretBottom/>
                         </el-icon>

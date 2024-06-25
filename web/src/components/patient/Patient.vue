@@ -40,6 +40,27 @@ import {Promotion} from "@element-plus/icons-vue";
           </el-icon>
           <span>我的缴费</span>
         </el-menu-item>
+        <el-sub-menu>
+          <template #title>
+            <el-icon>
+              <Promotion/>
+            </el-icon>
+            <span>了解信息</span>
+          </template>
+          <el-menu-item index="/board/patient/lookdoctor">
+            <el-icon>
+              <Promotion/>
+            </el-icon>
+            <span>了解医生</span>
+          </el-menu-item>
+          <el-menu-item index="/board/patient/lookdepartment">
+            <el-icon>
+              <Promotion/>
+            </el-icon>
+            <span>了解科室</span>
+          </el-menu-item>
+
+        </el-sub-menu>
       </el-menu>
     </el-aside>
     <el-container class="content-container">
@@ -74,6 +95,7 @@ import {Promotion} from "@element-plus/icons-vue";
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  width: 100%;
 }
 
 </style>

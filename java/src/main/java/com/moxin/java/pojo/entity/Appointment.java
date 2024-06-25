@@ -1,6 +1,5 @@
 package com.moxin.java.pojo.entity;
 
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -13,17 +12,18 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("registrations")
-public class Registration {
+@TableName("appointments")
+public class Appointment {
     @TableId(value = "id", type = IdType.AUTO)
-    Long id;
-    Long patientId;
-    Long doctorId;
-    Long departmentId;
-    Long appointmentId;
-    String reason;
-    String medicalRecordNumber;
-    LocalDateTime createdAt;
-    LocalDateTime updatedAt;
-    boolean isAppointment;
+    private Long id;
+    private Long patientId;
+    private Long doctorId;
+    private Long departmentId;
+    private LocalDateTime appointmentDate;
+    private String status;
+    private String reason;
+    private boolean isRegistered;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private String medicalRecordNumber;
 }

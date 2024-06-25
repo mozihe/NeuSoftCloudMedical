@@ -1,11 +1,10 @@
 package com.moxin.java.service;
 
-import com.moxin.java.pojo.dto.LoginDTO;
-import com.moxin.java.pojo.dto.RePasswordDTO;
-import com.moxin.java.pojo.dto.RegisterDTO;
-import com.moxin.java.pojo.dto.UpdateAvatarDTO;
+import com.moxin.java.pojo.dto.*;
 import com.moxin.java.pojo.entity.Doctor;
 import com.moxin.java.pojo.vo.DoctorLoginVO;
+
+import java.util.List;
 
 public interface DoctorService {
     void register(RegisterDTO registerDTO, String uuid);
@@ -17,4 +16,8 @@ public interface DoctorService {
     void updatePassword(RePasswordDTO rePasswordDTO);
 
     Doctor getInfo();
+
+    List<Doctor> getDepartmentDoctorList(DepartmentDoctorDTO departmentDoctorDTO);
+
+    List<Doctor> getAllVerifiedDoctor();
 }

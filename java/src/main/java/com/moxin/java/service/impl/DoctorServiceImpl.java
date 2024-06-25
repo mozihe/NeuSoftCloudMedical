@@ -3,10 +3,7 @@ package com.moxin.java.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.moxin.java.exception.AppException;
 import com.moxin.java.mapper.DoctorMapper;
-import com.moxin.java.pojo.dto.LoginDTO;
-import com.moxin.java.pojo.dto.RePasswordDTO;
-import com.moxin.java.pojo.dto.RegisterDTO;
-import com.moxin.java.pojo.dto.UpdateAvatarDTO;
+import com.moxin.java.pojo.dto.*;
 import com.moxin.java.pojo.entity.Doctor;
 import com.moxin.java.pojo.vo.DoctorLoginVO;
 import com.moxin.java.service.DoctorService;
@@ -20,14 +17,12 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
 public class DoctorServiceImpl implements DoctorService {
-
-    @Value("${default.avatar.url}")
-    private String defaultAvatarUrl;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -68,7 +63,6 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.setUsername(registerDTO.getUsername());
         doctor.setPassword(BCryptUtil.encryptPassword(registerDTO.getPassword()));
         doctor.setEmail(registerDTO.getEmail());
-        doctor.setAvatarUrl(defaultAvatarUrl);
         doctor.setName("未实名");
         doctor.setContactInfo("未填写");
         doctor.setDepartmentId(1L);
@@ -153,5 +147,34 @@ public class DoctorServiceImpl implements DoctorService {
         Map<String, Object> map = ThreadLocalUtil.get();
         Long id = ((Integer) map.get("id")).longValue();
         return doctorMapper.selectById(id);
+    }
+
+    @Override
+    public List<Doctor> getDepartmentDoctorList(DepartmentDoctorDTO departmentDoctorDTO) {
+        QueryWrapper<Doctor> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("department_id", departmentDoctorDTO.getId());
+        //并且已经通过审核
+        queryWrapper.eq("verified", true);
+        List<Doctor> doctors = doctorMapper.selectList(queryWrapper);
+
+        // 将医生职位和真实姓名拼接
+        for (Doctor doctor : doctors) {
+            if (doctor.getRole().equals("doctor")) {
+                doctor.setName("医生 " + doctor.getName());
+            } else if (doctor.getRole().equals("expert")) {
+                doctor.setName("专家 " + doctor.getName());
+            }
+        }
+
+        return doctors;
+    }
+
+    @Override
+    public List<Doctor> getAllVerifiedDoctor() {
+
+        QueryWrapper<Doctor> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("verified", true);
+        return doctorMapper.selectList(queryWrapper);
+
     }
 }

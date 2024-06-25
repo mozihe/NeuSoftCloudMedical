@@ -57,7 +57,6 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.setName(submissionDTO.getName());
             application.setAppliedRole(submissionDTO.getTargetRole());
             application.setStatus("ING");
-            System.out.println(application);
             applicationMapper.insert(application);
         } catch (Exception e) {
             e.printStackTrace();

@@ -40,6 +40,14 @@ const submitApply = () => {
   });
 };
 
+const changeDrug = () => {
+  if (applyInfo.value.targetRole === 'drug') {
+    applyInfo.value.departmentId = 1;
+  } else {
+    applyInfo.value.departmentId = '';
+  }
+};
+
 const rules = {
   name: [
     { required: true, message: '请输入姓名', trigger: 'blur' },
@@ -65,6 +73,10 @@ const rules = {
   ],
 };
 
+const ifIsDrug = () => {
+  return applyInfo.value.targetRole === 'drug';
+};
+
 getDepartmentsData();
 </script>
 
@@ -72,17 +84,17 @@ getDepartmentsData();
   <div class="container">
     <h1 class="centered-text">您的账号未得到管理员认证，请提交信息并联系管理员审批</h1>
     <el-card class="auto-size-card">
-      <el-form ref="form" size="large" :rules="rules">
-        <el-form-item label="姓名">
+      <el-form ref="form" size="large" :rules="rules" :model="applyInfo">
+        <el-form-item label="姓名" prop="name">
           <el-input v-model="applyInfo.name"></el-input>
         </el-form-item>
-        <el-form-item label="身份证号">
+        <el-form-item label="身份证号" prop="idNumber">
           <el-input v-model="applyInfo.idNumber"></el-input>
         </el-form-item>
-        <el-form-item label="联系方式">
+        <el-form-item label="联系方式" prop="contactInfo">
           <el-input v-model="applyInfo.contactInfo"></el-input>
         </el-form-item>
-        <el-form-item label="科室">
+        <el-form-item label="科室" prop="departmentId" v-if="!ifIsDrug()">
           <el-select v-model="applyInfo.departmentId" placeholder="请选择科室">
             <el-option
                 v-for="dept in departments"
@@ -92,14 +104,14 @@ getDepartmentsData();
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="职位">
-          <el-select v-model="applyInfo.targetRole" placeholder="请选择职位">
+        <el-form-item label="职位" prop="targetRole">
+          <el-select v-model="applyInfo.targetRole" placeholder="请选择职位" @change="changeDrug">
             <el-option label="医生" value="doctor"></el-option>
             <el-option label="专家" value="expert"></el-option>
             <el-option label="药房医生" value="drug"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="简介">
+        <el-form-item label="简介" prop="introduction">
           <el-input type="textarea" :rows="4" v-model="applyInfo.introduction"></el-input>
         </el-form-item>
         <el-form-item>

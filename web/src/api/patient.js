@@ -19,3 +19,7 @@ export function updatePatientAvatar(data) {
 export function updatePatientPassword(data) {
     return request.post('/patient/update/password', data)
 }
+
+export function updatePatientInfo(data) {
+    return request.post('/patient/update/info', data)
+}

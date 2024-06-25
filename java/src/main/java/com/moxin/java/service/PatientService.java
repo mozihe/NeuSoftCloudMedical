@@ -1,9 +1,6 @@
 package com.moxin.java.service;
 
-import com.moxin.java.pojo.dto.LoginDTO;
-import com.moxin.java.pojo.dto.RePasswordDTO;
-import com.moxin.java.pojo.dto.RegisterDTO;
-import com.moxin.java.pojo.dto.UpdateAvatarDTO;
+import com.moxin.java.pojo.dto.*;
 import com.moxin.java.pojo.entity.Patient;
 
 public interface PatientService {
@@ -16,4 +13,6 @@ public interface PatientService {
     void updatePassword(RePasswordDTO rePasswordDTO);
 
     Patient getInfo();
+
+    void updateInfo(UpdatePatientInfoDTO updatePatientInfoDTO);
 }

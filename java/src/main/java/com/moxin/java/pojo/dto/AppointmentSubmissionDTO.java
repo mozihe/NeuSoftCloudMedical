@@ -1,4 +1,4 @@
-package com.moxin.java.pojo.vo;
+package com.moxin.java.pojo.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -10,8 +10,10 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ApplicationListVO {
+public class AppointmentSubmissionDTO {
+    Long departmentId;
+    Long doctorId;
+    String reason;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime applicationTime;
-    String status;
+    LocalDateTime appointmentDate;
 }

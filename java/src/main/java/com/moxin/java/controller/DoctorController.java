@@ -1,9 +1,6 @@
 package com.moxin.java.controller;
 
-import com.moxin.java.pojo.dto.LoginDTO;
-import com.moxin.java.pojo.dto.RePasswordDTO;
-import com.moxin.java.pojo.dto.RegisterDTO;
-import com.moxin.java.pojo.dto.UpdateAvatarDTO;
+import com.moxin.java.pojo.dto.*;
 import com.moxin.java.pojo.vo.DoctorLoginVO;
 import com.moxin.java.pojo.vo.Result;
 import com.moxin.java.service.DoctorService;
@@ -48,6 +45,16 @@ public class DoctorController {
     @RequestMapping("/info")
     public Result getInfo() {
         return Result.builder().code(ResultCode.SUCCESS).message("获取信息成功").data(doctorService.getInfo()).build();
+    }
+
+    @RequestMapping("/department/list")
+    public Result getDepartmentList(@RequestBody DepartmentDoctorDTO departmentDoctorDTO) {
+        return Result.builder().code(ResultCode.SUCCESS).message("获取对应科室医生列表成功").data(doctorService.getDepartmentDoctorList(departmentDoctorDTO)).build();
+    }
+
+    @RequestMapping("/look/list")
+    public Result getAllVerifiedDoctor() {
+        return Result.builder().code(ResultCode.SUCCESS).message("获取所有已认证医生列表成功").data(doctorService.getAllVerifiedDoctor()).build();
     }
 
 }

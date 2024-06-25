@@ -10,8 +10,10 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ApplicationListVO {
+public class AppointmentLoadVO {
+    private Long id;
+    private String doctorName;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime applicationTime;
-    String status;
+    private LocalDateTime appointmentDate;
+    private String status;
 }

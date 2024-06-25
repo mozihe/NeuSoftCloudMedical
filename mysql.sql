@@ -58,10 +58,32 @@ CREATE TABLE registrations (
                                patient_id BIGINT NOT NULL,
                                doctor_id BIGINT NOT NULL,
                                department_id BIGINT NOT NULL,
-                               reason TEXT,
+                               medical_record_number VARCHAR(25) NOT NULL UNIQUE, -- 病历号
+                               reason TEXT, -- 挂号原因
+                               is_appointment BOOLEAN DEFAULT FALSE, -- 是否预约
+                               appointment_id BIGINT, -- 预约号，可为空
                                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                FOREIGN KEY (patient_id) REFERENCES patients(id),
                                FOREIGN KEY (doctor_id) REFERENCES doctors(id),
-                               FOREIGN KEY (department_id) REFERENCES departments(id)
+                               FOREIGN KEY (department_id) REFERENCES departments(id),
+                               FOREIGN KEY (appointment_id) REFERENCES appointments(id) -- 关联到预约表，可为空
+);
+
+
+CREATE TABLE appointments (
+                              id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                              patient_id BIGINT NOT NULL,
+                              doctor_id BIGINT NOT NULL,
+                              department_id BIGINT NOT NULL,
+                              appointment_date DATETIME NOT NULL,
+                              status VARCHAR(20) DEFAULT 'PENDING', -- 预约状态
+                              reason TEXT, -- 预约原因
+                              is_registered BOOLEAN DEFAULT FALSE, -- 是否已经挂号
+                              medical_record_number VARCHAR(25),
+                              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                              updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                              FOREIGN KEY (patient_id) REFERENCES patients(id),
+                              FOREIGN KEY (doctor_id) REFERENCES doctors(id),
+                              FOREIGN KEY (department_id) REFERENCES departments(id)
 );

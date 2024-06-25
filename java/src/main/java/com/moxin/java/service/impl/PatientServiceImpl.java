@@ -3,10 +3,7 @@ package com.moxin.java.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.moxin.java.exception.AppException;
 import com.moxin.java.mapper.PatientMapper;
-import com.moxin.java.pojo.dto.LoginDTO;
-import com.moxin.java.pojo.dto.RePasswordDTO;
-import com.moxin.java.pojo.dto.RegisterDTO;
-import com.moxin.java.pojo.dto.UpdateAvatarDTO;
+import com.moxin.java.pojo.dto.*;
 import com.moxin.java.pojo.entity.Patient;
 import com.moxin.java.service.PatientService;
 import com.moxin.java.utils.BCryptUtil;
@@ -25,8 +22,6 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class PatientServiceImpl implements PatientService {
 
-    @Value("${default.avatar.url}")
-    private String defaultAvatarUrl;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -74,7 +69,6 @@ public class PatientServiceImpl implements PatientService {
         patient.setIdNumber("未填写");
         patient.setIsProfileComplete(false);
 
-        patient.setAvatarUrl(defaultAvatarUrl);
 
         try {
             patientMapper.insert(patient);
@@ -149,8 +143,32 @@ public class PatientServiceImpl implements PatientService {
         }
         Long id = ((Integer) map.get("id")).longValue();
 
-        System.out.println(id);
 
         return patientMapper.selectById(id);
+    }
+
+    @Override
+    public void updateInfo(UpdatePatientInfoDTO updatePatientInfoDTO) {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String role = (String) map.get("role");
+        if (!role.equals("patient")) {
+            throw new AppException(ResultCode.UNAUTHORIZED, "权限不足");
+        }
+        Long id = ((Integer) map.get("id")).longValue();
+
+        Patient patient = patientMapper.selectById(id);
+        patient.setName(updatePatientInfoDTO.getName());
+        patient.setGender(updatePatientInfoDTO.getGender());
+        patient.setAge(updatePatientInfoDTO.getAge());
+        patient.setContactInfo(updatePatientInfoDTO.getContactInfo());
+        patient.setIdNumber(updatePatientInfoDTO.getIdNumber());
+        patient.setIsProfileComplete(true);
+
+        try {
+            patientMapper.updateById(patient);
+        } catch (Exception e) {
+            throw new AppException(ResultCode.FAIL, "更新失败");
+        }
+
     }
 }

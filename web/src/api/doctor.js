@@ -19,3 +19,11 @@ export function updateDoctorAvatar(data) {
 export function updateDoctorPassword(data) {
     return request.post('/doctor/update/password', data)
 }
+
+export function getDepartmentDoctorList(data) {
+    return request.post('/doctor/department/list', data)
+}
+
+export function getAllVerifiedDoctorList() {
+    return request.get('/doctor/look/list')
+}
