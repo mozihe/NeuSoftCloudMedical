@@ -27,4 +27,9 @@ public class RegistrationController {
         return Result.builder().code(ResultCode.SUCCESS).message("获取成功").data(registrationService.getPreInfo()).build();
     }
 
+    @RequestMapping("/doctor/getnext")
+    public Result getNextDoctor() {
+        return Result.builder().code(ResultCode.SUCCESS).message("获取成功").data(registrationService.getNextDoctor()).build();
+    }
+
 }

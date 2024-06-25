@@ -14,6 +14,10 @@ import Appointment from "@/components/patient/Appointment.vue";
 import PatientInfo from "@/components/patient/PatientInfo.vue";
 import LookDepartment from "@/components/patient/LookDepartment.vue";
 import LookDoctor from "@/components/patient/LookDoctor.vue";
+import DocRegistered from "@/components/doctor/doc/DocRegistered.vue";
+import DocAppointment from "@/components/doctor/doc/DocAppointment.vue";
+import DocCheck from "@/components/doctor/doc/DocCheck.vue";
+import DocInfo from "@/components/doctor/doc/DocInfo.vue";
 
 const routes = [
     {path: "/login", component: LoginRegister},
@@ -25,7 +29,17 @@ const routes = [
                 path: "admin",
                 component: Admin
             },
-            {path: "doctor", component: Doctor},
+            {
+                path: "doctor",
+                component: Doctor,
+                redirect: '/board/doctor/docregistered',
+                children: [
+                    {path: "docregistered", component: DocRegistered},
+                    {path: "docappoinment", component: DocAppointment},
+                    {path: "check", component: DocCheck},
+                    {path: "info", component: DocInfo},
+                ]
+            },
             {
                 path: "patient",
                 component: Patient,

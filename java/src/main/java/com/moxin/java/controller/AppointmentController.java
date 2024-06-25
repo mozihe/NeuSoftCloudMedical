@@ -1,7 +1,9 @@
 package com.moxin.java.controller;
 
 import com.moxin.java.pojo.dto.AppointDeleteDTO;
+import com.moxin.java.pojo.dto.AppointDocGetDTO;
 import com.moxin.java.pojo.dto.AppointmentSubmissionDTO;
+import com.moxin.java.pojo.dto.DoctorUpdateAppointmentDTO;
 import com.moxin.java.pojo.vo.Result;
 import com.moxin.java.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +34,24 @@ public class AppointmentController {
         appointmentService.delete(appointDeleteDTO);
         return Result.builder().code(200).message("删除成功").build();
     }
+
+    @RequestMapping("/doctor/list")
+    public Result doctorList() {
+        return Result.builder().code(200).message("查询成功").data(appointmentService.doctorList()).build();
+    }
+
+    @RequestMapping("/doctor/getpatient")
+    public Result getPatient(@RequestBody AppointDocGetDTO appointDocGetDTO) {
+        return Result.builder().code(200).message("查询成功").data(appointmentService.getPatient(appointDocGetDTO)).build();
+    }
+
+    @RequestMapping("/doctor/update")
+    public Result update(@RequestBody DoctorUpdateAppointmentDTO doctorUpdateAppointmentDTO) {
+        appointmentService.updateStatus(doctorUpdateAppointmentDTO);
+        return Result.builder().code(200).message("更新成功").build();
+    }
+
+
+
 
 }

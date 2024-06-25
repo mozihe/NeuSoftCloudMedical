@@ -20,4 +20,6 @@ public interface DoctorService {
     List<Doctor> getDepartmentDoctorList(DepartmentDoctorDTO departmentDoctorDTO);
 
     List<Doctor> getAllVerifiedDoctor();
+
+    void updateInfo(UpdateDoctorInfoDTO updateDoctorInfoDTO);
 }

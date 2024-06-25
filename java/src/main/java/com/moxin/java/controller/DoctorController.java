@@ -57,4 +57,10 @@ public class DoctorController {
         return Result.builder().code(ResultCode.SUCCESS).message("获取所有已认证医生列表成功").data(doctorService.getAllVerifiedDoctor()).build();
     }
 
+    @RequestMapping("/update/info")
+    public Result updateInfo(@RequestBody UpdateDoctorInfoDTO updateDoctorInfoDTO) {
+        doctorService.updateInfo(updateDoctorInfoDTO);
+        return Result.builder().code(ResultCode.SUCCESS).message("更新信息成功").build();
+    }
+
 }

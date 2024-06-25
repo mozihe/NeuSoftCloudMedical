@@ -33,6 +33,7 @@ const getUserInfo = async () => {
     userInfoStore.setUserInfo(result.data)
   } else {
     const result = await getDoctorInfo()
+    roleStore.setRole(result.data.role)
     userInfoStore.setUserInfo(result.data)
   }
 }

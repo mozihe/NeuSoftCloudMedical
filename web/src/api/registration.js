@@ -7,3 +7,7 @@ export function submitRegistration(data) {
 export function getPreRegistration() {
     return request.get('/registration/pre')
 }
+
+export function getNextRegistration() {
+    return request.get('/registration/doctor/getnext')
+}

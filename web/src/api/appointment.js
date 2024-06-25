@@ -11,3 +11,15 @@ export function getAppointmentList() {
 export function deleteAppointment(data) {
     return request.post(`/appointment/delete`, data)
 }
+
+export function doctorAppointmentList() {
+    return request.get('/appointment/doctor/list')
+}
+
+export function getAppointmentPatient(data) {
+    return request.post('/appointment/doctor/getpatient', data)
+}
+
+export function updateAppointment(data) {
+    return request.post('/appointment/doctor/update', data)
+}

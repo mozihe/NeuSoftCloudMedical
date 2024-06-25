@@ -43,7 +43,7 @@ const rules = {
   ],
   contactInfo: [
     {required: true, message: '请输入联系方式', trigger: 'blur'},
-    {min: 5, max: 15, message: '请输入正确的电话号码', trigger: 'blur'}
+    {pattern: /^1[3456789]\d{9}$/, message: '请输入正确的电话号码', trigger: 'blur'}
   ],
   age: [
     {required: true, message: '请输入年龄', trigger: 'blur'},

@@ -87,3 +87,36 @@ CREATE TABLE appointments (
                               FOREIGN KEY (doctor_id) REFERENCES doctors(id),
                               FOREIGN KEY (department_id) REFERENCES departments(id)
 );
+
+CREATE TABLE medications (
+                             id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                             name VARCHAR(255) NOT NULL,
+                             price DECIMAL(10, 2) NOT NULL,
+                             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE diagnostic_reports (
+                                    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                                    patient_id BIGINT NOT NULL,
+                                    doctor_id BIGINT NOT NULL,
+                                    medical_record_number VARCHAR(25) NOT NULL, -- 添加病历号字段
+                                    diagnosis TEXT NOT NULL,
+                                    reason TEXT, -- 添加挂号原因字段
+                                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                    FOREIGN KEY (patient_id) REFERENCES patients(id),
+                                    FOREIGN KEY (doctor_id) REFERENCES doctors(id)
+);
+-- 创建药物处方表
+CREATE TABLE prescriptions (
+                               id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                               diagnostic_report_id BIGINT NOT NULL,
+                               medication_id BIGINT NOT NULL,
+                               medication_name VARCHAR(255) NOT NULL,
+                               dosage VARCHAR(255) NOT NULL,
+                               created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                               updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                               FOREIGN KEY (diagnostic_report_id) REFERENCES diagnostic_reports(id),
+                               FOREIGN KEY (medication_id) REFERENCES medications(id)
+);

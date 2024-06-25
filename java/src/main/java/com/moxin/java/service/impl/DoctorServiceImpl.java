@@ -177,4 +177,20 @@ public class DoctorServiceImpl implements DoctorService {
         return doctorMapper.selectList(queryWrapper);
 
     }
+
+    @Override
+    public void updateInfo(UpdateDoctorInfoDTO updateDoctorInfoDTO) {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Long id = ((Integer) map.get("id")).longValue();
+        Doctor doctor = doctorMapper.selectById(id);
+        doctor.setName(updateDoctorInfoDTO.getName());
+        doctor.setContactInfo(updateDoctorInfoDTO.getContactInfo());
+        doctor.setIntroduction(updateDoctorInfoDTO.getIntroduction());
+        try {
+            doctorMapper.updateById(doctor);
+        } catch (Exception e) {
+            throw new AppException(ResultCode.FAIL, "更新信息失败");
+        }
+
+    }
 }

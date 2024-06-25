@@ -27,3 +27,7 @@ export function getDepartmentDoctorList(data) {
 export function getAllVerifiedDoctorList() {
     return request.get('/doctor/look/list')
 }
+
+export function updateDoctorInfo(data) {
+    return request.post('/doctor/update/info', data)
+}
