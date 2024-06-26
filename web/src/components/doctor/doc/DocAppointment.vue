@@ -57,7 +57,7 @@ const clearDiagnosisInfo = () => {
 const showDialog = (row) => {
   dialogVisible.value = true;
   nowAppointment.value = row;
-  getPatient(row.patientId);
+  getPatient(row.id);
 
 };
 

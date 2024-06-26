@@ -120,7 +120,7 @@ getDepartmentsData()
       <el-table-column label="当前状态">
         <template #default="{ row }">
           <el-tag v-if="row.status === 'PENDING'" type="info">待通过</el-tag>
-          <el-tag v-else-if="row.status === 'SUCCESS'" type="success">以通过</el-tag>
+          <el-tag v-else-if="row.status === 'SUCCESS'" type="success">已通过</el-tag>
           <el-tag v-else-if="row.status === 'FAIL'" type="danger">被拒绝</el-tag>
         </template>
       </el-table-column>

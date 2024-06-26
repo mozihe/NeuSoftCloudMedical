@@ -15,3 +15,7 @@ export function getDiaPatientInfo(data) {
 export function getDiaMedicineList(data) {
     return request.post('/diagnosticreport/medicine/list', data)
 }
+
+export function patientGetDiagnosticList() {
+    return request.get('/diagnosticreport/patient/list')
+}

@@ -10,17 +10,17 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@TableName("diagnostic_reports")
-public class DiagnosticReport {
+@NoArgsConstructor
+@TableName("payments")
+public class Payment {
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
-    private Long patientId;
-    private Long doctorId;
-    private String medicalRecordNumber;
-    private String diagnosis;
-    private String reason;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    Long id;
+    Long patientId;
+    String medicalRecordNumber;
+    float registrationFee;
+    float totalAmountDue;
+    Boolean isPaymentComplete;
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
 }

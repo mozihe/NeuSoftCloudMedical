@@ -18,6 +18,8 @@ import DocRegistered from "@/components/doctor/doc/DocRegistered.vue";
 import DocAppointment from "@/components/doctor/doc/DocAppointment.vue";
 import DocCheck from "@/components/doctor/doc/DocCheck.vue";
 import DocInfo from "@/components/doctor/doc/DocInfo.vue";
+import PatientReport from "@/components/patient/PatientReport.vue";
+import Payment from "@/components/patient/Payment.vue";
 
 const routes = [
     {path: "/login", component: LoginRegister},
@@ -48,6 +50,8 @@ const routes = [
                     {path: "registered", component: Registered},
                     {path: "reserve", component: Appointment},
                     {path: "info", component: PatientInfo},
+                    {path: "report", component: PatientReport},
+                    {path: "payment", component: Payment},
                     {path: "lookdepartment", component: LookDepartment},
                     {path: "lookdoctor", component: LookDoctor}
                 ]

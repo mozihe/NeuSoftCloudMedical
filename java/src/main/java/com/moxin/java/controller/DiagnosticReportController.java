@@ -38,6 +38,11 @@ public class DiagnosticReportController {
         return Result.builder().code(ResultCode.SUCCESS).message("获取成功").data(diagnosticReportService.getDiaMedicineList(data)).build();
     }
 
+    @RequestMapping("/patient/list")
+    public Result getPatientDiagnosticList() {
+        return Result.builder().code(ResultCode.SUCCESS).message("获取成功").data(diagnosticReportService.getPatientDiagnosticList()).build();
+    }
+
 
 }
 

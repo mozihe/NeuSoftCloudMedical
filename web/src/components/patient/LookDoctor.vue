@@ -68,7 +68,7 @@ getDoctorListData()
       </template>
     </el-table>
 
-    <el-dialog v-model="dialogVisible" title="科室详情" width="30%">
+    <el-dialog v-model="dialogVisible" title="医生详情" width="30%">
       <el-form label-width="80px">
         <el-form-item label="医生名称">
           <el-input v-model="currentDoctor.name" disabled/>

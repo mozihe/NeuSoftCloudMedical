@@ -120,3 +120,15 @@ CREATE TABLE prescriptions (
                                FOREIGN KEY (diagnostic_report_id) REFERENCES diagnostic_reports(id),
                                FOREIGN KEY (medication_id) REFERENCES medications(id)
 );
+
+CREATE TABLE payments (
+                          id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                          medical_record_number VARCHAR(25) NOT NULL,
+                          patient_id BIGINT NOT NULL,
+                          total_amount_due DECIMAL(10, 2) NOT NULL,
+                          registration_fee DECIMAL(10, 2) NOT NULL,
+                          is_payment_complete BOOLEAN DEFAULT FALSE,
+                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                          FOREIGN KEY (patient_id) REFERENCES patients(id)
+);

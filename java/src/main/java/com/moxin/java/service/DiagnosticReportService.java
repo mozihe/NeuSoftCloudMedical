@@ -6,6 +6,8 @@ import com.moxin.java.pojo.entity.DiagnosticReport;
 import com.moxin.java.pojo.entity.Prescription;
 import com.moxin.java.pojo.vo.DocGetAppointPatientVO;
 import com.moxin.java.pojo.vo.DocGetDiaVO;
+import com.moxin.java.pojo.vo.PatGetDiaVO;
+import com.moxin.java.pojo.vo.PrescriptionWithPayVO;
 
 import java.util.List;
 
@@ -16,5 +18,7 @@ public interface DiagnosticReportService {
 
     DocGetAppointPatientVO getDiaPatientInfo(MedicalRecordDTO data);
 
-    List<Prescription> getDiaMedicineList(MedicalRecordDTO data);
+    List<PrescriptionWithPayVO> getDiaMedicineList(MedicalRecordDTO data);
+
+    List<PatGetDiaVO> getPatientDiagnosticList();
 }

@@ -1,8 +1,7 @@
 <script setup>
-
 import {Edit} from "@element-plus/icons-vue";
 import {ref} from "vue";
-import {docGetDiagnosticList, getDiaPatientInfo, getDiaMedicineList} from "@/api/diagnostic.js";
+import {getDiaPatientInfo, getDiaMedicineList, patientGetDiagnosticList} from "@/api/diagnostic.js";
 
 const diagnosisList = ref([]);
 const nowPatient = ref({});
@@ -11,7 +10,7 @@ const nowMedicineList = ref([]);
 const nowDiagnosis = ref({});
 
 const getDiagnosisList = async () => {
-  const res = await docGetDiagnosticList();
+  const res = await patientGetDiagnosticList();
   diagnosisList.value = res.data;
 };
 
@@ -37,7 +36,6 @@ const showDialog = (row) => {
 };
 
 getDiagnosisList()
-
 </script>
 
 <template>
@@ -50,7 +48,8 @@ getDiagnosisList()
     <el-table :data="diagnosisList" style="width: 100%">
       <el-table-column label="序号" width="100" type="index"></el-table-column>
       <el-table-column label="病历号" prop="medicalRecordNumber"></el-table-column>
-      <el-table-column label="患者" prop="targetName"></el-table-column>
+      <el-table-column label="医生" prop="targetName"></el-table-column>
+      <el-table-column label="时间" prop="createdAt"></el-table-column>
       <el-table-column label="操作" width="100">
         <template #default="{ row }">
           <el-button :icon="Edit" circle plain type="primary" @click="showDialog(row)"></el-button>

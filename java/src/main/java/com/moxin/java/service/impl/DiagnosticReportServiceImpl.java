@@ -1,7 +1,6 @@
 package com.moxin.java.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.moxin.java.exception.AppException;
 import com.moxin.java.mapper.*;
 import com.moxin.java.pojo.dto.DiagnosticSubPreDTO;
@@ -10,6 +9,8 @@ import com.moxin.java.pojo.dto.MedicalRecordDTO;
 import com.moxin.java.pojo.entity.*;
 import com.moxin.java.pojo.vo.DocGetAppointPatientVO;
 import com.moxin.java.pojo.vo.DocGetDiaVO;
+import com.moxin.java.pojo.vo.PatGetDiaVO;
+import com.moxin.java.pojo.vo.PrescriptionWithPayVO;
 import com.moxin.java.service.DiagnosticReportService;
 import com.moxin.java.utils.ResultCode;
 import com.moxin.java.utils.ThreadLocalUtil;
@@ -38,6 +39,15 @@ public class DiagnosticReportServiceImpl implements DiagnosticReportService {
     @Autowired
     private PatientMapper patientMapper;
 
+    @Autowired
+    private DoctorMapper doctorMapper;
+
+    @Autowired
+    private PaymentMapper paymentMapper;
+
+    @Autowired
+    private MedicationMapper medicationMapper;
+
 
     @Override
     public void submit(DiagnosticSubmitDTO diagnosticSubmitDTO) {
@@ -64,7 +74,6 @@ public class DiagnosticReportServiceImpl implements DiagnosticReportService {
         diagnosticReport.setDiagnosis(diagnosticSubmitDTO.getDiagnosis());
         diagnosticReportMapper.insert(diagnosticReport);
 
-        //插入处方信息
         if (diagnosticSubmitDTO.getMedicineList() != null && !diagnosticSubmitDTO.getMedicineList().isEmpty()) {
             for (DiagnosticSubPreDTO item : diagnosticSubmitDTO.getMedicineList()) {
                 Prescription prescription = new Prescription();
@@ -75,6 +84,31 @@ public class DiagnosticReportServiceImpl implements DiagnosticReportService {
                 prescriptionMapper.insert(prescription);
             }
         }
+
+        Payment payment = new Payment();
+        payment.setPatientId(registration.getPatientId());
+        payment.setIsPaymentComplete(false);
+
+        Doctor doctor = doctorMapper.selectById(id);
+
+        if (doctor.getRole().equals("expert")) {
+            payment.setRegistrationFee(5);
+        } else {
+            payment.setRegistrationFee(1.5F);
+        }
+        payment.setMedicalRecordNumber(diagnosticSubmitDTO.getMedicalRecordNumber());
+
+        QueryWrapper<Prescription> queryWrapper2 = new QueryWrapper<>();
+        queryWrapper2.eq("diagnostic_report_id", diagnosticReport.getId());
+        List<Prescription> prescriptions = prescriptionMapper.selectList(queryWrapper2);
+        float total = 0F;
+        for (Prescription prescription : prescriptions) {
+            Medication medication = medicationMapper.selectById(prescription.getMedicationId());
+            total += medication.getPrice() * Integer.parseInt(prescription.getDosage());
+        }
+
+        payment.setTotalAmountDue(total + payment.getRegistrationFee());
+        paymentMapper.insert(payment);
 
         //先查看是否有预约，处理预约表,预约表中的挂号码是唯一的
         QueryWrapper<Appointment> queryWrapper1 = new QueryWrapper<>();
@@ -135,7 +169,7 @@ public class DiagnosticReportServiceImpl implements DiagnosticReportService {
     }
 
     @Override
-    public List<Prescription> getDiaMedicineList(MedicalRecordDTO data) {
+    public List<PrescriptionWithPayVO> getDiaMedicineList(MedicalRecordDTO data) {
         QueryWrapper<DiagnosticReport> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("medical_record_number", data.getMedicalRecordNumber());
         DiagnosticReport diagnosticReport = diagnosticReportMapper.selectOne(queryWrapper);
@@ -145,7 +179,51 @@ public class DiagnosticReportServiceImpl implements DiagnosticReportService {
 
         QueryWrapper<Prescription> queryWrapper1 = new QueryWrapper<>();
         queryWrapper1.eq("diagnostic_report_id", diagnosticReport.getId());
-        return prescriptionMapper.selectList(queryWrapper1);
+        List<Prescription> prescriptions = prescriptionMapper.selectList(queryWrapper1);
+
+        List<PrescriptionWithPayVO> prescriptionWithPayVOS = new ArrayList<>();
+        for (Prescription prescription : prescriptions) {
+            PrescriptionWithPayVO prescriptionWithPayVO = new PrescriptionWithPayVO();
+            prescriptionWithPayVO.setMedicationName(prescription.getMedicationName());
+            prescriptionWithPayVO.setDosage(prescription.getDosage());
+            Medication medication = medicationMapper.selectById(prescription.getMedicationId());
+            prescriptionWithPayVO.setPrice(medication.getPrice());
+            prescriptionWithPayVO.setDiagnosticReportId(prescription.getDiagnosticReportId());
+            prescriptionWithPayVO.setMedicationId(prescription.getMedicationId());
+            prescriptionWithPayVO.setCreatedAt(prescription.getCreatedAt());
+            prescriptionWithPayVO.setUpdatedAt(prescription.getUpdatedAt());
+            prescriptionWithPayVOS.add(prescriptionWithPayVO);
+        }
+
+        return prescriptionWithPayVOS;
+    }
+
+    @Override
+    public List<PatGetDiaVO> getPatientDiagnosticList() {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String role = (String) map.get("role");
+        if (role == null || (!role.equals("patient"))) {
+            throw new AppException(ResultCode.UNAUTHORIZED, "无权限");
+        }
+        Long id = ((Integer) map.get("id")).longValue();
+
+        QueryWrapper<DiagnosticReport> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("patient_id", id);
+
+        List<DiagnosticReport> diagnosticReports = diagnosticReportMapper.selectList(queryWrapper);
+
+        List<PatGetDiaVO> patGetDiaVOS = new ArrayList<>();
+
+        for (DiagnosticReport diagnosticReport : diagnosticReports) {
+            PatGetDiaVO patGetDiaVO = new PatGetDiaVO();
+            patGetDiaVO.setDiagnosis(diagnosticReport.getDiagnosis());
+            patGetDiaVO.setCreatedAt(diagnosticReport.getCreatedAt());
+            patGetDiaVO.setMedicalRecordNumber(diagnosticReport.getMedicalRecordNumber());
+            patGetDiaVO.setTargetName(doctorMapper.selectById(diagnosticReport.getDoctorId()).getName());
+            patGetDiaVOS.add(patGetDiaVO);
+        }
+
+        return patGetDiaVOS;
     }
 
 }
