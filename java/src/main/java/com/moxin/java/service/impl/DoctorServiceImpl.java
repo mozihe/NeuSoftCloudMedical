@@ -174,6 +174,8 @@ public class DoctorServiceImpl implements DoctorService {
 
         QueryWrapper<Doctor> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("verified", true);
+        //不是管理员
+        queryWrapper.ne("role", "admin");
         return doctorMapper.selectList(queryWrapper);
 
     }

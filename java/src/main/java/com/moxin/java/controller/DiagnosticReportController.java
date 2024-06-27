@@ -43,7 +43,12 @@ public class DiagnosticReportController {
         return Result.builder().code(ResultCode.SUCCESS).message("获取成功").data(diagnosticReportService.getPatientDiagnosticList()).build();
     }
 
+    @RequestMapping("/admin/list")
+    public Result adminGetDiagnosticList() {
+        return Result.builder().code(ResultCode.SUCCESS).message("获取成功").data(diagnosticReportService.adminGetDiagnosticList()).build();
+    }
 
 }
+
 
 

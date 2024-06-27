@@ -1,6 +1,7 @@
 <script setup>
 import {
-  Promotion,
+  Notebook,
+  Promotion, User,
 } from '@element-plus/icons-vue'
 </script>
 
@@ -12,13 +13,13 @@ import {
                router>
         <el-menu-item index="/board/waitverify/submission">
           <el-icon>
-            <Promotion/>
+            <Notebook/>
           </el-icon>
           <span>提交申请</span>
         </el-menu-item>
         <el-menu-item index="/board/waitverify/my">
           <el-icon>
-            <Promotion/>
+            <User/>
           </el-icon>
           <span>我的申请</span>
         </el-menu-item>

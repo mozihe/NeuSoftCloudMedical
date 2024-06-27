@@ -192,6 +192,7 @@ public class DiagnosticReportServiceImpl implements DiagnosticReportService {
             prescriptionWithPayVO.setMedicationId(prescription.getMedicationId());
             prescriptionWithPayVO.setCreatedAt(prescription.getCreatedAt());
             prescriptionWithPayVO.setUpdatedAt(prescription.getUpdatedAt());
+            prescriptionWithPayVO.setId(prescription.getId());
             prescriptionWithPayVOS.add(prescriptionWithPayVO);
         }
 
@@ -224,6 +225,34 @@ public class DiagnosticReportServiceImpl implements DiagnosticReportService {
         }
 
         return patGetDiaVOS;
+    }
+
+    @Override
+    public List<PatGetDiaVO> adminGetDiagnosticList() {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String role = (String) map.get("role");
+        if (role == null || (!role.equals("admin"))) {
+            throw new AppException(ResultCode.UNAUTHORIZED, "无权限");
+        }
+        Long id = ((Integer) map.get("id")).longValue();
+
+        QueryWrapper<DiagnosticReport> queryWrapper = new QueryWrapper<>();
+
+        List<DiagnosticReport> diagnosticReports = diagnosticReportMapper.selectList(queryWrapper);
+
+        List<PatGetDiaVO> patGetDiaVOS = new ArrayList<>();
+
+        for (DiagnosticReport diagnosticReport : diagnosticReports) {
+            PatGetDiaVO patGetDiaVO = new PatGetDiaVO();
+            patGetDiaVO.setDiagnosis(diagnosticReport.getDiagnosis());
+            patGetDiaVO.setCreatedAt(diagnosticReport.getCreatedAt());
+            patGetDiaVO.setMedicalRecordNumber(diagnosticReport.getMedicalRecordNumber());
+            patGetDiaVO.setTargetName(doctorMapper.selectById(diagnosticReport.getDoctorId()).getName());
+            patGetDiaVOS.add(patGetDiaVO);
+        }
+
+        return patGetDiaVOS;
+
     }
 
 }

@@ -1,6 +1,6 @@
 <script setup>
 
-import {Promotion} from "@element-plus/icons-vue";
+import {Bell, Notebook, Promotion, User} from "@element-plus/icons-vue";
 </script>
 
 <template>
@@ -11,7 +11,7 @@ import {Promotion} from "@element-plus/icons-vue";
                router>
         <el-menu-item index="/board/doctor/docregistered">
           <el-icon>
-            <Promotion/>
+            <Bell/>
           </el-icon>
           <span>我的挂号</span>
         </el-menu-item>
@@ -23,13 +23,13 @@ import {Promotion} from "@element-plus/icons-vue";
         </el-menu-item>
         <el-menu-item index="/board/doctor/check">
           <el-icon>
-            <Promotion/>
+            <Notebook/>
           </el-icon>
           <span>诊断记录</span>
         </el-menu-item>
         <el-menu-item index="/board/doctor/info">
           <el-icon>
-            <Promotion/>
+            <User/>
           </el-icon>
           <span>个人信息</span>
         </el-menu-item>

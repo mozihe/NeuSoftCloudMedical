@@ -21,4 +21,6 @@ public interface DiagnosticReportService {
     List<PrescriptionWithPayVO> getDiaMedicineList(MedicalRecordDTO data);
 
     List<PatGetDiaVO> getPatientDiagnosticList();
+
+    List<PatGetDiaVO> adminGetDiagnosticList();
 }

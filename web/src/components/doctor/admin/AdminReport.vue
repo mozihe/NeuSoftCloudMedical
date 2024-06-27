@@ -1,7 +1,7 @@
 <script setup>
 import {Aim, Edit, View} from "@element-plus/icons-vue";
 import {ref} from "vue";
-import {getDiaPatientInfo, getDiaMedicineList, patientGetDiagnosticList} from "@/api/diagnostic.js";
+import {getDiaPatientInfo, getDiaMedicineList, adminGetDiagnosticList} from "@/api/diagnostic.js";
 
 const diagnosisList = ref([]);
 const nowPatient = ref({});
@@ -10,7 +10,7 @@ const nowMedicineList = ref([]);
 const nowDiagnosis = ref({});
 
 const getDiagnosisList = async () => {
-  const res = await patientGetDiagnosticList();
+  const res = await adminGetDiagnosticList();
   diagnosisList.value = res.data;
 };
 
@@ -60,7 +60,7 @@ getDiagnosisList()
       </template>
     </el-table>
 
-    <el-dialog v-model="dialogVisible" title="详情信息" width="30%">
+    <el-dialog v-model="dialogVisible" title="详情信息" width="40%">
       <div class="card-content">
         <el-row :gutter="20">
           <el-col :span="20">
@@ -68,7 +68,7 @@ getDiagnosisList()
               <el-descriptions-item label="姓名">{{ nowPatient.name }}</el-descriptions-item>
               <el-descriptions-item label="年龄">{{ nowPatient.age }}</el-descriptions-item>
               <el-descriptions-item label="性别">{{ nowPatient.gender === 'female' ? '女' : '男' }}</el-descriptions-item>
-              <el-descriptions-item label="预约原因">{{ nowPatient.reason }}</el-descriptions-item>
+              <el-descriptions-item label="挂号原因">{{ nowPatient.reason }}</el-descriptions-item>
               <el-descriptions-item label="联系方式">{{ nowPatient.contactInfo }}</el-descriptions-item>
               <el-descriptions-item label="医生诊断">{{ nowDiagnosis.diagnosis }}</el-descriptions-item>
               <el-descriptions-item label="用药">

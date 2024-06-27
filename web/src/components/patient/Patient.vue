@@ -1,6 +1,6 @@
 <script setup>
 import ChatWidget from "@/components/patient/ChatWidget.vue";
-import {Promotion} from "@element-plus/icons-vue";
+import {Bell, Document, Memo, Notebook, Promotion, User, Wallet} from "@element-plus/icons-vue";
 
 </script>
 
@@ -12,31 +12,31 @@ import {Promotion} from "@element-plus/icons-vue";
                router>
         <el-menu-item index="/board/patient/registered">
           <el-icon>
-            <Promotion/>
+            <Bell/>
           </el-icon>
           <span>我的挂号</span>
         </el-menu-item>
         <el-menu-item index="/board/patient/reserve">
           <el-icon>
-            <Promotion/>
+            <Document/>
           </el-icon>
           <span>我的预约</span>
         </el-menu-item>
         <el-menu-item index="/board/patient/info">
           <el-icon>
-            <Promotion/>
+            <User/>
           </el-icon>
           <span>个人信息</span>
         </el-menu-item>
         <el-menu-item index="/board/patient/report">
           <el-icon>
-            <Promotion/>
+            <Notebook/>
           </el-icon>
           <span>我的报告</span>
         </el-menu-item>
         <el-menu-item index="/board/patient/payment">
           <el-icon>
-            <Promotion/>
+            <Wallet/>
           </el-icon>
           <span>我的缴费</span>
         </el-menu-item>
@@ -49,13 +49,13 @@ import {Promotion} from "@element-plus/icons-vue";
           </template>
           <el-menu-item index="/board/patient/lookdoctor">
             <el-icon>
-              <Promotion/>
+              <User/>
             </el-icon>
             <span>了解医生</span>
           </el-menu-item>
           <el-menu-item index="/board/patient/lookdepartment">
             <el-icon>
-              <Promotion/>
+              <Memo/>
             </el-icon>
             <span>了解科室</span>
           </el-menu-item>
@@ -69,7 +69,7 @@ import {Promotion} from "@element-plus/icons-vue";
 
   </el-container>
 
-  <ChatWidget />
+<!--  <ChatWidget />-->
 </template>
 
 <style lang="scss" scoped>

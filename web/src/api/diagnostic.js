@@ -19,3 +19,7 @@ export function getDiaMedicineList(data) {
 export function patientGetDiagnosticList() {
     return request.get('/diagnosticreport/patient/list')
 }
+
+export function adminGetDiagnosticList() {
+    return request.get('/diagnosticreport/admin/list')
+}

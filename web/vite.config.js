@@ -20,5 +20,8 @@ export default defineConfig({
         rewrite: path => path.replace(/^\/api/,'')
       }
     }
+  },
+  build: {
+    outDir: 'dist', // 构建输出目录
   }
 })

@@ -1,3 +1,5 @@
+create database nsm_db;
+
 use nsm_db;
 
 CREATE TABLE patients (

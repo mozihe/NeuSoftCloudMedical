@@ -20,6 +20,13 @@ import DocCheck from "@/components/doctor/doc/DocCheck.vue";
 import DocInfo from "@/components/doctor/doc/DocInfo.vue";
 import PatientReport from "@/components/patient/PatientReport.vue";
 import Payment from "@/components/patient/Payment.vue";
+import DrugPayment from "@/components/doctor/drug/DrugPayment.vue";
+import DrugInfo from "@/components/doctor/drug/DrugInfo.vue";
+import AdminDepartment from "@/components/doctor/admin/AdminDepartment.vue";
+import AdminMedication from "@/components/doctor/admin/AdminMedication.vue";
+import AdminDoctor from "@/components/doctor/admin/AdminDoctor.vue";
+import AdminReport from "@/components/doctor/admin/AdminReport.vue";
+import AdminPayment from "@/components/doctor/admin/AdminPayment.vue";
 
 const routes = [
     {path: "/login", component: LoginRegister},
@@ -29,7 +36,15 @@ const routes = [
         children: [
             {
                 path: "admin",
-                component: Admin
+                component: Admin,
+                redirect: '/board/admin/department',
+                children: [
+                    {path: "department", component: AdminDepartment},
+                    {path: "drug", component: AdminMedication},
+                    {path: "doctor", component: AdminDoctor},
+                    {path: "report", component: AdminReport},
+                    {path: "payment", component: AdminPayment}
+                ]
             },
             {
                 path: "doctor",
@@ -56,7 +71,15 @@ const routes = [
                     {path: "lookdoctor", component: LookDoctor}
                 ]
             },
-            {path: "drug", component: Drug},
+            {
+                path: "drug",
+                component: Drug,
+                redirect: '/board/drug/payment',
+                children: [
+                    {path: "payment", component: DrugPayment},
+                    {path: "info", component: DrugInfo}
+                ]
+            },
             {
                 path: "waitverify",
                 component: WaitVerify,

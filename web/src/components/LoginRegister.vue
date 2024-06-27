@@ -1,5 +1,5 @@
 <script setup>
-import { User, Lock } from '@element-plus/icons-vue'
+import {User, Lock, Message, Bell} from '@element-plus/icons-vue'
 import { ref } from 'vue'
 import { sendEmail } from "@/api/email.js";
 import { useMailStore } from "@/stores/mail.js";
@@ -181,12 +181,12 @@ const clearLoginData = () => {
           <el-input :prefix-icon="User" placeholder="请输入用户名" v-model="registerData.username"></el-input>
         </el-form-item>
         <el-form-item prop="email">
-          <el-input :prefix-icon="User" placeholder="请输入邮箱" v-model="registerData.email"></el-input>
+          <el-input :prefix-icon="Message" placeholder="请输入邮箱" v-model="registerData.email"></el-input>
         </el-form-item>
         <el-form-item prop="code">
           <el-row style="width: 100%">
             <el-col :span="16">
-              <el-input :prefix-icon="User" placeholder="请输入验证码" v-model="registerData.code"></el-input>
+              <el-input :prefix-icon="Bell" placeholder="请输入验证码" v-model="registerData.code"></el-input>
             </el-col>
             <el-col :span="8">
               <el-button type="primary" @click="sendCode" :disabled="timer > 0">{{ timer > 0 ? `${timer}s 后重新获取` : '获取验证码' }}</el-button>

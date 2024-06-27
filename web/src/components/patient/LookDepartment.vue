@@ -1,6 +1,6 @@
 <script setup>
 
-import {Edit} from "@element-plus/icons-vue";
+import {Edit, View} from "@element-plus/icons-vue";
 import {ref} from "vue";
 import {getDepartmentList} from "@/api/department.js";
 
@@ -34,7 +34,7 @@ getDepartmentListData()
       <el-table-column label="科室名称" prop="name"></el-table-column>
       <el-table-column label="查看详情" width="100">
         <template #default="{ row }">
-          <el-button :icon="Edit" circle plain type="primary" @click="showDialog(row)"></el-button>
+          <el-button :icon="View" circle plain type="primary" @click="showDialog(row)"></el-button>
         </template>
       </el-table-column>
       <template #empty>

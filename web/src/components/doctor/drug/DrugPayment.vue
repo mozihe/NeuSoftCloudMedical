@@ -1,25 +1,20 @@
 <script setup>
 import {Aim, Edit, View} from "@element-plus/icons-vue";
 import {ref} from "vue";
-import {getDiaPatientInfo, getDiaMedicineList, patientGetDiagnosticList} from "@/api/diagnostic.js";
+import {getDiaMedicineList} from "@/api/diagnostic.js";
+import {getAllPayment, finishPayment} from "@/api/payment.js";
+import {ElMessage} from "element-plus";
 
-const diagnosisList = ref([]);
-const nowPatient = ref({});
+const paymentList = ref([]);
 const dialogVisible = ref(false);
 const nowMedicineList = ref([]);
-const nowDiagnosis = ref({});
+const nowPayment = ref({});
 
-const getDiagnosisList = async () => {
-  const res = await patientGetDiagnosticList();
-  diagnosisList.value = res.data;
+const getPaymentList = async () => {
+  const res = await getAllPayment();
+  paymentList.value = res.data;
 };
 
-const getPatientInfo = async (medicalRecordNumber) => {
-  const res = await getDiaPatientInfo({
-    medicalRecordNumber: medicalRecordNumber
-  });
-  nowPatient.value = res.data;
-};
 
 const getMedicineList = async (medicalRecordNumber) => {
   const res = await getDiaMedicineList({
@@ -30,12 +25,22 @@ const getMedicineList = async (medicalRecordNumber) => {
 
 const showDialog = (row) => {
   dialogVisible.value = true;
-  getPatientInfo(row.medicalRecordNumber);
-  nowDiagnosis.value = row;
+  nowPayment.value = row;
   getMedicineList(row.medicalRecordNumber);
 };
 
-getDiagnosisList()
+const finishOrder = async () => {
+  console.log(nowPayment.value.medicalRecordNumber);
+  const res = await finishPayment({
+    medicalRecordNumber: nowPayment.value.medicalRecordNumber
+  });
+  ElMessage.success("订单已完结");
+  await getPaymentList();
+  dialogVisible.value = false;
+};
+
+getPaymentList()
+
 </script>
 
 <template>
@@ -45,11 +50,17 @@ getDiagnosisList()
         <span>预约系统</span>
       </div>
     </template>
-    <el-table :data="diagnosisList" style="width: 100%">
+    <el-table :data="paymentList" style="width: 100%">
       <el-table-column label="序号" width="100" type="index"></el-table-column>
       <el-table-column label="病历号" prop="medicalRecordNumber"></el-table-column>
-      <el-table-column label="医生" prop="targetName"></el-table-column>
-      <el-table-column label="时间" prop="createdAt"></el-table-column>
+      <el-table-column label="姓名" prop="patientName"></el-table-column>
+      <el-table-column label="总金额" prop="totalAmountDue"></el-table-column>
+      <el-table-column label="状态">
+        <template #default="{ row }">
+          <el-tag v-if="row.isPaymentComplete === false" type="info">待支付</el-tag>
+          <el-tag v-else-if="row.isPaymentComplete === true" type="success">已支付</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="100">
         <template #default="{ row }">
           <el-button :icon="View" circle plain type="primary" @click="showDialog(row)"></el-button>
@@ -60,25 +71,26 @@ getDiagnosisList()
       </template>
     </el-table>
 
-    <el-dialog v-model="dialogVisible" title="详情信息" width="30%">
+    <el-dialog v-model="dialogVisible" title="详情信息" width="40%">
       <div class="card-content">
         <el-row :gutter="20">
-          <el-col :span="20">
+          <el-col :span="24">
             <el-descriptions label-position="top" :column="1" :border="true">
-              <el-descriptions-item label="姓名">{{ nowPatient.name }}</el-descriptions-item>
-              <el-descriptions-item label="年龄">{{ nowPatient.age }}</el-descriptions-item>
-              <el-descriptions-item label="性别">{{ nowPatient.gender === 'female' ? '女' : '男' }}</el-descriptions-item>
-              <el-descriptions-item label="预约原因">{{ nowPatient.reason }}</el-descriptions-item>
-              <el-descriptions-item label="联系方式">{{ nowPatient.contactInfo }}</el-descriptions-item>
-              <el-descriptions-item label="医生诊断">{{ nowDiagnosis.diagnosis }}</el-descriptions-item>
+              <el-descriptions-item label="病历号">{{ nowPayment.medicalRecordNumber }}</el-descriptions-item>
+              <el-descriptions-item label="挂号费">{{ nowPayment.registrationFee }}</el-descriptions-item>
               <el-descriptions-item label="用药">
                 <el-table :data="nowMedicineList" style="width: 100%">
                   <el-table-column label="序号" width="100" type="index"></el-table-column>
                   <el-table-column label="药物名称" prop="medicationName"></el-table-column>
+                  <el-table-column label="单价" prop="price"></el-table-column>
                   <el-table-column label="用量" prop="dosage"></el-table-column>
                 </el-table>
               </el-descriptions-item>
+              <el-descriptions-item label="总金额">{{ nowPayment.totalAmountDue }}</el-descriptions-item>
             </el-descriptions>
+            <div class="button-row">
+              <el-button type="primary" @click="finishOrder">完结订单</el-button>
+            </div>
           </el-col>
         </el-row>
       </div>
@@ -103,6 +115,10 @@ getDiagnosisList()
     .el-descriptions-item__label {
       font-weight: bold;
       color: #606266;
+    }
+
+    .button-row {
+      margin-top: 20px;
     }
 
   }

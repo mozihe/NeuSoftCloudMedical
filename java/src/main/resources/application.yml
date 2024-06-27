@@ -34,7 +34,7 @@ spring:
 
 
 minio:
-  url: http://23.94.66.103:9000
-  accessKey: xOjyrnFBT0TVPY9bOeLA
-  secretKey: CTHBkI6y2JBCuASu58rJZP0Cac2KX24DdTYB831x
-  bucketName: test
+  url: https://base.neusoftmedical.top
+  accessKey: LN8872J8VVeUIXqtzhfs
+  secretKey: O43xYEVQfj8DUgpT8Oqb6n7ZjiFGZeE0m9WWxqRE
+  bucketName: nsm
