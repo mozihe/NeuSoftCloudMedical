@@ -13,7 +13,7 @@ CREATE TABLE patients (
                           gender VARCHAR(10) NOT NULL,
                           is_profile_complete BOOLEAN DEFAULT FALSE,
                           age VARCHAR(3),
-                          id_number VARCHAR(20) UNIQUE,
+                          id_number VARCHAR(20),
                           created_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                           updated_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -39,7 +39,7 @@ CREATE TABLE doctors (
                          avatar_url VARCHAR(255),
                          role VARCHAR(20) NOT NULL, -- 用于区分医生、专家、药房医生、管理员
                          verified BOOLEAN DEFAULT FALSE,
-                         id_number VARCHAR(20) UNIQUE,
+                         id_number VARCHAR(20),
                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                          FOREIGN KEY (department_id) REFERENCES departments(id)

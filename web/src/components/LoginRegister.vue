@@ -83,6 +83,7 @@ const sendCode = async () => {
       });
 
       ElMessage.success(result.message ? result.message : '验证码已发送，请注意查收');
+      console.log(result.data);
       useMailStore().setMail(result.data);
     }
   });

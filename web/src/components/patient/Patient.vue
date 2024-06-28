@@ -69,7 +69,7 @@ import {Bell, Document, Memo, Notebook, Promotion, User, Wallet} from "@element-
 
   </el-container>
 
-<!--  <ChatWidget />-->
+  <ChatWidget />
 </template>
 
 <style lang="scss" scoped>

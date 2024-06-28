@@ -28,13 +28,14 @@ public class EmailServiceImpl implements EmailService {
         String message = EmailUtils.genEmailMessage(code);
         String subject = EmailUtils.genEmailSubject();
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setFrom("zhujunheng2005@gmail.com");
+        mailMessage.setFrom("zhujunheng2005@163.com");
         mailMessage.setTo(email);
         mailMessage.setSubject(subject);
         mailMessage.setText(message);
         try {
             mailSender.send(mailMessage);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new AppException(ResultCode.EMAIL_ERROR, "邮件发送失败");
         }
         String uuid = UUID.randomUUID().toString();

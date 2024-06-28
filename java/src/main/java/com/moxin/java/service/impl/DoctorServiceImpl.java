@@ -74,6 +74,7 @@ public class DoctorServiceImpl implements DoctorService {
         try {
             doctorMapper.insert(doctor);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new AppException(ResultCode.FAIL, "注册失败");
         }
 

@@ -5,13 +5,13 @@
     </button>
     <div ref="chatBox" class="chat-box" v-if="isChatOpen || isAnimating" @animationend="handleAnimationEnd">
       <div class="chat-header">
-        <span>Chat</span>
+        <span>虚拟医生</span>
         <button @click="toggleChat">✖️</button>
       </div>
       <div class="chat-messages">
-        <div v-for="(message, index) in messages" :key="index" :class="message.sender">
+        <div v-for="(message, index) in messages" :key="index" :class="message.role">
           <div class="message-box">
-            <span>{{ message.text }}</span>
+            <span>{{ message.content }}</span>
           </div>
         </div>
       </div>
@@ -19,29 +19,32 @@
         <input
             v-model="newMessage"
             @keyup.enter="sendMessage"
-            placeholder="Type a message..."
+            placeholder="输入信息"
             :disabled="isWaitingForReply || newMessage.length > 500"
         />
         <button @click="sendMessage" :disabled="isWaitingForReply || newMessage.length > 500">Send</button>
       </div>
-      <div v-if="newMessage.length > 500" class="error-message">Message too long! Max 500 characters.</div>
+      <div v-if="newMessage.length > 500" class="error-message">太长了，最多500字</div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+
+import ollama from 'ollama'
 
 export default {
+
   data() {
     return {
       isChatOpen: false,
       newMessage: '',
       messages: [],
       isAnimating: false,
-      isWaitingForReply: false // Add isWaitingForReply to track if we are waiting for a reply
+      isWaitingForReply: false
     };
   },
+
   methods: {
     toggleChat() {
       if (!this.isAnimating) {
@@ -51,7 +54,7 @@ export default {
           this.$refs.chatBox.classList.add('slide-out');
           setTimeout(() => {
             this.isChatOpen = false;
-          }, 500); // 0.5s matches the animation duration
+          }, 500);
         } else {
           this.isChatOpen = true;
           this.$nextTick(() => {
@@ -78,28 +81,32 @@ export default {
       if (this.newMessage.trim() === '' || this.isWaitingForReply || this.newMessage.length > 500) return;
 
       const message = {
-        sender: 'user',
-        text: this.newMessage
+        "role": 'User',
+        "content": this.newMessage
       };
       this.messages.push(message);
       this.newMessage = '';
       this.isWaitingForReply = true;
 
-      try {
-        const response = await axios.post('http://127.0.0.1:5000/post', {
-          message: message.text
-        });
 
-        if (response.data && response.data.reply) {
+      try {
+        const response = await ollama.chat({
+          "model": "mymodel",
+          "messages": this.messages,
+          "stream": false
+        })
+
+        console.log(response);
+
+        if (response.message && response.message.content) {
           this.messages.push({
-            sender: 'bot',
-            text: response.data.reply
+            "role": 'Assistant',
+            "content": response.message.content
           });
-          this.isWaitingForReply = false; // Unlock send button after receiving a valid reply
+          this.isWaitingForReply = false;
         }
       } catch (error) {
         console.error('Error sending message:', error);
-        //this.isWaitingForReply = false; // Unlock send button in case of error
       }
     }
   }
@@ -212,12 +219,12 @@ export default {
   word-wrap: break-word; /* Ensure text wraps */
 }
 
-.user .message-box {
+.User .message-box {
   background-color: #dcf8c6;
   align-self: flex-end;
 }
 
-.bot .message-box {
+.Assistant .message-box {
   background-color: #f1f0f0;
   align-self: flex-start;
 }

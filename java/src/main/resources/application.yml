@@ -14,10 +14,10 @@ spring:
       max-request-size: 100MB
 
   mail:
-    host: in-v3.mailjet.com
-    port: 587
-    username: f083a684d4b8baa0be5443c6a4aa42a2
-    password: 81bd6c3cdcced7cdb48464b566efa4bb
+    host: smtp.163.com
+    port: 25
+    username: zhujunheng2005@163.com
+    password: BJHHTGGRWGIZDVMJ
     properties:
           mail:
             smtp:
